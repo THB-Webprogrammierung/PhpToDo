@@ -1,6 +1,13 @@
 <?php
 namespace base\http;
-
+/**
+ * HttpRequest
+ *
+ * @author Jens Bekersch <bekersch@th-brandenburg.de>
+ * @author Tim Schulz <timschulz1985@web.de>
+ * @author Ines Güssow <ines.guessow@th-brandenburg.de
+ * @version 1.0 05/2018
+ */
 class HttpRequest implements Request {
 
     private $parameters;

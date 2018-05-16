@@ -1,6 +1,13 @@
 <?php
 namespace base;
-
+/**
+ * Front Controller
+ *
+ * @author Jens Bekersch <bekersch@th-brandenburg.de>
+ * @author Tim Schulz <timschulz1985@web.de>
+ * @author Ines Güssow <ines.guessow@th-brandenburg.de
+ * @version 1.0 05/2018
+ */
 use base\http\Request;
 use base\http\Response;
 use base\command\CommandResolver;
@@ -20,7 +27,6 @@ class FrontController {
     }
 
     public function handleRequest(Request $request, Response $response) {
-        //print_r($this->preFilters->getFilters());
         $this->preFilters->processFilters($request, $response);
         $command = $this->resolver->getCommand($request);
         $command->execute($request, $response);

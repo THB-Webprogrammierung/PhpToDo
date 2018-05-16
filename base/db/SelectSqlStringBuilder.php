@@ -1,7 +1,13 @@
 <?php
 namespace base\db;
-
-
+/**
+ * SelectSqlStringBuilder
+ *
+ * @author Jens Bekersch <bekersch@th-brandenburg.de>
+ * @author Tim Schulz <timschulz1985@web.de>
+ * @author Ines Güssow <ines.guessow@th-brandenburg.de
+ * @version 1.0 05/2018
+ */
 class SelectSqlStringBuilder {
 
     private $tableName;

@@ -12,7 +12,6 @@ class Todo extends DatabaseModelOperations {
 
     private $id, $owner, $text, $done;
 
-
     public function __construct() {
         parent::__construct();
     }

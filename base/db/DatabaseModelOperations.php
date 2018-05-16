@@ -1,6 +1,13 @@
 <?php
 namespace base\db;
-
+/**
+ * DatabaseModelOperations
+ *
+ * @author Jens Bekersch <bekersch@th-brandenburg.de>
+ * @author Tim Schulz <timschulz1985@web.de>
+ * @author Ines Güssow <ines.guessow@th-brandenburg.de
+ * @version 1.0 05/2018
+ */
 use PDO;
 
 class DatabaseModelOperations extends DatabaseConnect {
@@ -26,7 +33,7 @@ class DatabaseModelOperations extends DatabaseConnect {
     private $rc;
     /**
      * DatabaseModelOperations constructor.
-     * @throws \ReflectionException
+     *
      * Extrahiert die in den Kommentaren hinterlegten Werte der
      * Datenbanktabelle und Spalten des aufrufenden Datenmodells.
      */
@@ -52,10 +59,12 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getTable
-     * @param $rc \ReflectionClass
-     * @return string Tabellenname
+     *
      * Extrakiert den Tabellennamen @table aus dem Kommentar
      * des aufrufenden Datenmodells
+     *
+     * @param $rc \ReflectionClass
+     * @return string Tabellenname
      */
     private function getTable() {
         preg_match('/@table=(.*?)/U', $this->rc->getDocComment(), $table);
@@ -63,10 +72,12 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getColumnNames
-     * @param $rc \ReflectionClass
-     * @return array Spaltennamen
+     *
      * Extrahiert die Spatennamen @values aus dem Kommentar
      * des aufrufenden Datenmodells
+     *
+     * @param $rc \ReflectionClass
+     * @return array Spaltennamen
      */
     private function getColumnNames() {
         preg_match('/@values=(.*?)/U', $this->rc->getDocComment(), $values);
@@ -75,8 +86,10 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getColumnNamesAsString
-     * @return string Spalennamen
+     *
      * Gibt die im Datenmodell angegebenen Spaltennamen der Tabelle zurück.
+     *
+     * @return string Spalennamen
      */
     private function getColumnNamesAsString() {
         $dbPreparedData = "";
@@ -88,9 +101,11 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getColumnNamesAsString
-     * @return string $values
+     *
      * Gibt einen kommaseparierten String mit den Spaltennamen
      * des Datenmodells zurück, deren Werte gesetzt sind
+     *
+     * @return string $values
      */
     private function getFilteredColumnNamesAsString() {
         $dbPreparedData = "";
@@ -105,9 +120,11 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getPlaceholdersAsString
-     * @return string Placeholders
+     *
      * Gibt die Platzhalter für den 'prepared' SQL String zurück:
      * kommasepariert, nur Platzhalter von im Datenmdell belegten Werten
+     *
+     * @return string Placeholders
      */
     private function getPlaceholdersAsString() {
         $dbPreparedData = "";
@@ -122,8 +139,10 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getValuesAsArray
-     * @return array Values
+     *
      * Schreibt die Platzhalter mit Wert in ein Array
+     *
+     * @return array Values
      */
     private function getValuesAsArray() {
         $dbPreparedData = array();
@@ -137,9 +156,11 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * getUpdateString
-     * @return string UpdateString
+     *
      * Gibt den aus Spaltennamen und Platzhaltern bestehenden String
      * für ein SQL Update zurück.
+     *
+     * @return string UpdateString
      */
     private function getUpdateString() {
         $dbPreparedData = "";
@@ -151,9 +172,11 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * SQL Insert
-     * @return bool|int
+     *
      * Fügt in die Tabelle alle erlaubten und im Modell gesetzten
      * Werte ein.
+     *
+     * @return bool|int
      */
     public function insert() {
         $this->startConnection();
@@ -174,8 +197,10 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * SQL Update
-     * @return bool|int
+     *
      * Führt ein Update der Daten des Datenmodells durch
+     *
+     * @return bool|int
      */
     public function save() {
         $this->startConnection();
@@ -197,11 +222,13 @@ class DatabaseModelOperations extends DatabaseConnect {
     }
     /**
      * SQL Select
+     *
+     * Sucht nach einem bestimmten Wert und schreibt das
+     * Ergebnis in das Datenmodell
+     *
      * @param $name Spaltenname
      * @param $value Suchwert
      * @return mixed
-     * Sucht nach einem bestimmten Wert und schreibt das
-     * Ergebnis in das Datenmodell
      */
     public function findOne($name, $value) {
         $this->startConnection();
@@ -225,7 +252,15 @@ class DatabaseModelOperations extends DatabaseConnect {
 
         $this->closeConnection();
     }
-
+    /**
+     * find
+     *
+     * Findet alle Einträge zu den definierten Suchparametern
+     *
+     * @param $name
+     * @param $value
+     * @return mixed
+     */
     public function find($name, $value) {
         $this->startConnection();
 
@@ -246,7 +281,13 @@ class DatabaseModelOperations extends DatabaseConnect {
         $this->closeConnection();
     }
     /**
-     * SQL Count
+     * count
+     *
+     * Gibt die Anzahl der Einträge nach einem bestimmten Suchparameter zurück
+     *
+     * @param $columnName
+     * @param $value
+     * @return mixed
      */
     public function count($columnName, $value) {
         $this->startConnection();
@@ -267,9 +308,10 @@ class DatabaseModelOperations extends DatabaseConnect {
 
         $this->closeConnection();
     }
-
     /**
-     * SQL Delete
+     * delete
+     *
+     * Löscht einen Eitnrag
      */
     public function delete() {
         $this->startConnection();
