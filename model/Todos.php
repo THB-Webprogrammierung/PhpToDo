@@ -24,14 +24,17 @@ class Todos extends Todo {
     }
 
     public function getTodos($result) {
-        foreach($result as $value) {
-            $todo = new Todo();
-            $todo->setId($value['id']);
-            $todo->setOwner($value['owner']);
-            $todo->setText($value['text']);
-            $todo->setDone($value['done']);
-            $this->setTodo($todo);
-        }
-        return $this->todos;
+        if(!empty($result) && is_array($result)) {
+            foreach ($result as $value) {
+                $todo = new Todo();
+                $todo->setId($value['id']);
+                $todo->setOwner($value['owner']);
+                $todo->setText($value['text']);
+                $todo->setDone($value['done']);
+                $this->setTodo($todo);
+            }
+            return $this->todos;
+        } else
+            return null;
     }
 }

@@ -54,12 +54,17 @@ class RegistrierenController implements Command {
                         $user->setPassword(password_hash($request->getParameter('password'), PASSWORD_BCRYPT));
                         /* Der neue Nutzer wird in die Datenbank geschrieben */
                         $user->insert();
-                        /* Eine entsprechende Meldung wird ausgegeben */
-                        $meldung = "Sie haben sich erfolgreich registiert! <a href=\"{$reg->getConfiguration()->getDomain()}\">Bitte loggen Sie sich hier ein.</a>";
+                        // Die Session Variablen werden gesetzt
+                        $_SESSION['login'] = 'ok';
+                        $_SESSION['name'] = $request->getParameter('login');
                         /* Und alle Request Parameter gelöscht */
                         $request->deleteParameter('login');
                         $request->deleteParameter('password');
                         $request->deleteParameter('passwordrepeat');
+                        /* und der Nutzer wird auf die Todo Liste weitergeleitet */
+                        header('Location: '.$reg->getConfiguration()->getDomain().'/aufgabenliste/');
+                        exit();
+
                     }
                 }
             } else {
