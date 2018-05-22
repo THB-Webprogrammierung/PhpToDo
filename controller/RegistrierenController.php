@@ -39,6 +39,12 @@ class RegistrierenController implements Command {
                 if($request->getParameter('password') != $request->getParameter('passwordrepeat')) {
                     /* Wenn die Passwörter nicht übereinstimmen, dann wird folgende Meldung ausgegeben: */
                     $meldung = "Die Passwörter stimmen nicht überein!";
+                    /* Prüfen, ob der Benutzername den Voprgaben entspricht: */
+                } else if(!$this->checkUser($request->getParameter('login'))) {
+                    $meldung = "Der Nutzername darf nur aus Buchstaben, Zahlen und Unterstrich bestehen! " . $this->checkUser($request->getParameter('login'));
+                    /* Prüfen, ob das Passwort den Vorgaben entspricht: */
+                } else if(!$this->checkPassword($request->getParameter('password'))) {
+                    $meldung = "Das Passwort muss mindestens 6 Zeichen lang sein, einen Buchstaben, eine Zahl und eines der folgenden Sonderzeichen enthalten: .,#+!$";
                 } else {
                     /* Wenn alles richtig ist, dann wird der Nutzer in der Datenbank angelegt */
                     $user = new User();
@@ -82,5 +88,31 @@ class RegistrierenController implements Command {
         $view->assign('password', $request->getParameter('password'));
         /* Die View rendern */
         $view->render($request, $response);
+    }
+    /**
+     * Methode zur Überprüfung des Passworte
+     * @param $password
+     * @return bool
+     */
+    private function checkPassword($password) {
+        if (preg_match("/^.*(?=.*[.,#+!$])(?=.*\d)(?=.*\w)(?=.{6,}).*$/", $password)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    /**
+     * Methode zur Überprüfung des Benutzernamens
+     * @param $user
+     * @return bool
+     */
+    private function checkUser($user) {
+        if (preg_match("/[\d\w_]/", $user)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

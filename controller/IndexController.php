@@ -21,7 +21,7 @@ class IndexController implements Command {
     /**
      * Execute
      *
-     * Methode, die die serverseitige Bearbeitung realisiert. Verbindet das Datenschicht mit der Ausgabeschicht.
+     * Methode, die die serverseitige Bearbeitung realisiert. Verbindet die Datenschicht mit der Ausgabeschicht.
      *
      * @param Request $request
      * @param Response $response
@@ -30,7 +30,7 @@ class IndexController implements Command {
     public function execute(Request $request, Response $response) {
         /* Laden der Konfigurationsvariablen */
         $reg = Registry::getInstance();
-        /* Prüfvariable: hier wird gespeichert, ob eine erfolgreiche Authentigizierung im Anmeldeprozess stattgefunden hat */
+        /* Prüfvariable: hier wird gespeichert, ob eine erfolgreiche Authentifizierung im Anmeldeprozess stattgefunden hat */
         $authenticationSuccess = false;
         /* Initialisierung der String Variablen für eine etwaige Meldung, wie zum Beispiel 'Login war nicht erfolgreich' */
         $meldung = "";
