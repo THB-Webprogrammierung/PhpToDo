@@ -47,19 +47,4 @@ class FileSystemCommandResolver implements CommandResolver {
         return $command;
     }
 
-    protected function loadApi($apiName) {
-        $apiName = ucfirst($apiName);
-        $class = "Controller\\Api\\{$apiName}Controller";
-        $file = "controller/api/{$apiName}Controller.php";
-        if (!file_exists($file)) {
-            return false;
-        }
-        include_once $file;
-        if (!class_exists($class)) {
-            return false;
-        }
-        $command = new $class();
-        return $command;
-    }
-
 }

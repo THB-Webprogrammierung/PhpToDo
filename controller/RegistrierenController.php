@@ -30,39 +30,43 @@ class RegistrierenController implements Command {
     public function execute(Request $request, Response $response) {
         /* Deklarationen */
         $meldung = "";
+        $requestMethod = $request->getRequestMethod();
+        $loginName = $request->getParameter('login');
+        $password = $request->getParameter('password');
+        $passwordRepeat = $request->getParameter('passwordrepeat');
         /* Initialisierung der String Variablen für eine etwaige Meldung, wie zum Beispiel 'Login war nicht erfolgreich' */
         $reg = Registry::getInstance();
         /* Benutzeranmeldung: Request Methode ist POST */
-        if($request->getRequestMethod() == 'POST') {
+        if($requestMethod == 'POST') {
             /* Überprüfen der übermittelten Daten auf Vollständigkeit und Korrektheit (Passwörter stimmen überein) */
-            if($request->getParameter('login') != "" && $request->getParameter('password') != "" && $request->getParameter('passwordrepeat') != "") {
-                if($request->getParameter('password') != $request->getParameter('passwordrepeat')) {
+            if($loginName != "" && $password  != "" && $passwordRepeat != "") {
+                if($password != $passwordRepeat) {
                     /* Wenn die Passwörter nicht übereinstimmen, dann wird folgende Meldung ausgegeben: */
                     $meldung = "Die Passwörter stimmen nicht überein!";
                     /* Prüfen, ob der Benutzername den Voprgaben entspricht: */
-                } else if(!$this->checkUser($request->getParameter('login'))) {
+                } else if(!$this->checkUser($loginName)) {
                     $meldung = "Der Nutzername darf nur aus Buchstaben, Zahlen und Unterstrich bestehen! " . $this->checkUser($request->getParameter('login'));
                     /* Prüfen, ob das Passwort den Vorgaben entspricht: */
-                } else if(!$this->checkPassword($request->getParameter('password'))) {
+                } else if(!$this->checkPassword($password)) {
                     $meldung = "Das Passwort muss mindestens 6 Zeichen lang sein, einen Buchstaben, eine Zahl und eines der folgenden Sonderzeichen enthalten: .,#+!$";
                 } else {
                     /* Wenn alles richtig ist, dann wird der Nutzer in der Datenbank angelegt */
                     $user = new User();
                     /* Prüfung, ob der Nutzername schon vergeben ist */
-                    $user->findOne('login', $request->getParameter('login'));
+                    $user->findOne('login', $loginName);
                     if($user->getId() > -1) {
-                        print $user->findOne('login', $request->getParameter('login'));
+                        print $user->findOne('login', $loginName);
                         $meldung = "Dieser Benutzername ist bereits vergeben!";
                     } else {
                         /* Wenn dieser noch nicht vergeben ist, dann werden die Daten im Datenmodell gespeichert */
-                        $user->setLogin($request->getParameter('login'));
+                        $user->setLogin($loginName);
                         /* Das Passwort wird kryptografisch gespeichert */
-                        $user->setPassword(password_hash($request->getParameter('password'), PASSWORD_BCRYPT));
+                        $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
                         /* Der neue Nutzer wird in die Datenbank geschrieben */
                         $user->insert();
                         // Die Session Variablen werden gesetzt
                         $_SESSION['login'] = 'ok';
-                        $_SESSION['name'] = $request->getParameter('login');
+                        $_SESSION['name'] = $loginName;
                         /* Und alle Request Parameter gelöscht */
                         $request->deleteParameter('login');
                         $request->deleteParameter('password');
@@ -84,8 +88,8 @@ class RegistrierenController implements Command {
         $view->assign('domain', $reg->getConfiguration()->getDomain());
         $view->assign('seite', "Todolist - Registrierung");
         $view->assign('meldung', $meldung);
-        $view->assign('login', $request->getParameter('login'));
-        $view->assign('password', $request->getParameter('password'));
+        $view->assign('login', $loginName);
+        $view->assign('password', $password);
         /* Die View rendern */
         $view->render($request, $response);
     }
