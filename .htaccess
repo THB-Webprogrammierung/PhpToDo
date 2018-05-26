@@ -1,6 +1,7 @@
 RewriteEngine On
 RewriteBase /
+RewriteRule ^(.*)/(.*)/(.*)$ /ea3/?cmd=$1&action=$2&id=$3
 RewriteRule ^(.*)/$ /ea3/?cmd=$1
-RewriteRule ^(.*)/(done|delete)/(.*)$ /ea3/?cmd=$1=&action=$2&id=$3
+
 
 
