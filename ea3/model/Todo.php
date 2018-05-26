@@ -2,7 +2,7 @@
 namespace model;
 use base\db\DatabaseModelOperations;
 /**
- * Class Todo
+ * Class Benutzer
  * @package model
  * @table=EA3_TODO
  * @values=id,owner,text,done

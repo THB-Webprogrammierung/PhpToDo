@@ -2,9 +2,9 @@
 
 namespace model;
 /**
- * Class Todo
+ * Class Benutzer
  * @package model
- * @table=EA3_TODO
+ * @table=todo
  * @values=id,owner,text,done
  */
 class Todos extends Todo {

@@ -57,5 +57,17 @@ class HttpRequest implements Request {
         return $_SERVER['REQUEST_METHOD'];
     }
 
+    public function getContent($name) {
+        if($this->getRequestMethod() === "PUT" || $this->getRequestMethod() === "DELETE") {
+            $put = array();
+            parse_str(file_get_contents('php://input'), $put);
+            return $put[$name];
+        } else if($this->getRequestMethod() === "POST") {
+            if(!isset($_POST[$name])) {
+                return null;
+            }
+            return $_POST[$name];
+        }
+    }
 
 }

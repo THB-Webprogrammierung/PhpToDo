@@ -33,11 +33,6 @@ class AufgabenlisteController implements Command {
     public function execute(Request $request, Response $response) {
         /* Konfigurationsvariablen */
         $reg = Registry::getInstance();
-        $requestMethod = $request->getRequestMethod();
-        if($request->getParameter('action') != '') {
-            $action = $request->getParameter('action');
-        }
-
         /* Das Datenmodell für den Benutzer wird instanziiert und das Datenmodell mit den Nutzerdaten aus der Datenbank befüllt */
         $user = new User();
         $user->findOne("login", $_SESSION['name']);
@@ -58,23 +53,18 @@ class AufgabenlisteController implements Command {
          * und in der Liste gespeichert.
         */
         $todos = new Todos();
-        $todos = $this->getAllTodos($todos, $user);
+        $todos->getTodos($todos->find("owner", $user->getId()));
         /* Wenn eine Aufgabe als erledigt oder wieder als noch nicht erledigt markiert wurde, dann */
-        if($requestMethod == 'GET' && isset($action) && $action == 'done') {
-            $id = $request->getParameter('id');
+        if($request->getRequestMethod() == 'GET' && isset($_GET['done']) && $_GET['done'] != '') {
             /* wird zuerst geprüft, in welchem Status sich die Aufgabe befindet, um den Wert 'true' oder 'false' im Datenmodell zu speichern */
-            $todos->getTodo($id)->getDone() ? $todos->getTodo($id)->setDone('0') : $todos->getTodo($id)->setDone('1');
+            $todos->getTodo($_GET['done'])->getDone() ? $todos->getTodo($_GET['done'])->setDone('0') : $todos->getTodo($_GET['done'])->setDone('1');
             /* um die Veränderung anschliessen zu persistieren */
-            $todos->getTodo($id)->save();
+            $todos->getTodo($_GET['done'])->save();
         }
         /* Wenn eine Aufgabe gelöscht werden soll, dann */
-        if($requestMethod == 'GET' && isset($action) && $action == 'delete') {
-            $id = $request->getParameter('id');
+        if($request->getRequestMethod() == 'GET' && isset($_GET['delete']) && $_GET['delete'] != '') {
             /* wird diese direkt in der Datenbank gelöscht */
-            $todos->getTodo($id)->delete();
-            unset($todos);
-            $todos = new Todos();
-            $todos = $this->getAllTodos($todos, $user);
+            $todos->getTodo($_GET['delete'])->delete();
         }
         /* Template initialisieren */
         $view = new HtmlTemplateView('aufgabenliste');
@@ -86,10 +76,5 @@ class AufgabenlisteController implements Command {
         $view->assign('anzahlTodos', $todos->count("owner", $user->getId()));
         /* Die View rendern */
         $view->render($request, $response);
-    }
-
-    private function getAllTodos($todos, $user) {
-        $todos->getTodos($todos->find("owner", $user->getId()));
-        return $todos;
     }
 }

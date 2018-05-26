@@ -3,7 +3,7 @@ namespace model;
 
 use base\db\DatabaseModelOperations;
 /**
- * Class User
+ * Class Benutzer
  * @package model
  * @table=EA3_USER
  * @values=id,login,password

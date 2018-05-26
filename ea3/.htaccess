@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^(registrieren)/$ /?cmd=$1
+
