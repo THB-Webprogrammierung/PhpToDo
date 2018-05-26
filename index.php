@@ -64,7 +64,6 @@ $response = new HttpResponse();
  * Aufruf der Methode 'handleRequest' des FrontControllers
  */
 $controller->handleRequest($request, $response);
-echo$_GET['done'];
 
 
 
