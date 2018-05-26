@@ -1,5 +1,5 @@
 .buildpath
 .settings
 .idea
-.config.inc.php
 .project
+config.php
