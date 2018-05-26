@@ -22,7 +22,7 @@ session_set_cookie_params ( 0, "/", "", FALSE, FALSE );
 session_start();
 /* Einbinden benötigter Dateien - Autoload und Konfiguration */
 require 'autoload.php';
-require 'config.php';
+require 'config.inc.php';
 /* Einbinden benötigter Klassen */
 use base\http\HttpRequest;
 use base\http\HttpResponse;
